@@ -10,6 +10,9 @@ ipch/
 x64/
 .vs/
 
+# Jetbrains
+.idea/
+
 #tempfiles
 ~$_*.*
 
@@ -50,3 +53,6 @@ Debug/
 *.exe
 *.out
 *.app
+
+# Cmake
+cmake-build-debug
