@@ -2,10 +2,10 @@
 //  Assignment: 1 
 //  Milestone : 2
 // #############################################################################################
-//  Student Name  : 
-//  Student ID    : 
-//  Student Email :
-//  Course Section: 
+//  Student Name  : Zander Maitland
+//  Student ID    : 112303219
+//  Student Email : zmaitland@myseneca.ca
+//  Course Section: NCC
 // #############################################################################################
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -30,6 +30,7 @@ void displayAccount(const struct Account account, const struct UserLogin login, 
 
 int main(void)
 {
+    // Variable Declarations
     struct Account account = { 0 };                      // *** DO NOT MODIFY THIS LINE ***
     struct Person person = { { 0 } };                    // *** DO NOT MODIFY THIS LINE ***
     struct UserLogin login = { { 0 } };                  // *** DO NOT MODIFY THIS LINE ***
