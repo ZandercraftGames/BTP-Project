@@ -191,7 +191,7 @@ char getCharOption (const char* validChars)
         } else {
             // An invalid value was received.
             clearStandardInputBuffer();  // Clear the input buffer to prevent issues.
-            printf("ERROR: Value must be a single character: ");  // Show error
+            printf("ERROR: Character must be one of [%s]: ", validChars);  // Show error
             correct = 0;  // The loop continues.
         }
     }

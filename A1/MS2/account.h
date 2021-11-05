@@ -10,7 +10,7 @@
 
 // Personal information about a customer.
 struct Person {
-    char fullName[31];      // first, middle, and surname of customer
+    char fullName[31];      // first, middle (if applicable), and surname of customer
     int birthYear;          // birth year of customer
     double householdIncome; // customer's household income
     char country[31];       // customer's country of residence

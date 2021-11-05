@@ -36,7 +36,10 @@ int main(void)
     struct UserLogin login = { { 0 } };                  // *** DO NOT MODIFY THIS LINE ***
 
     // Declare other variables you may need here:
-
+    const int min_age = 18;           // Minimum age to open an account
+    const int max_age = 110;          // Maximum age to open an account
+    const int max_chars_name = 30;    // Maximum chars allowed for person's name.
+    const int max_chars_country = 30; // Maximum chars allowed for country name.
 
     printf("Assignment 1 Milestone 2\n");                          // *** DO NOT MODIFY THIS LINE ***
     printf("=============================================\n\n");   // *** DO NOT MODIFY THIS LINE ***
@@ -52,9 +55,15 @@ int main(void)
     printf("Account Data Input\n");                                // *** DO NOT MODIFY THIS LINE ***
     printf("----------------------------------------\n");          // *** DO NOT MODIFY THIS LINE ***
 
-    // Add the necessary code to get user input for each Account member:
-    // !!! <STUDENT CODE HERE> !!!
-    
+    // Prompt for account number
+    printf("Enter the account number: ");
+    account.ID = getInteger();  // Get the user's input and set it to the account ID
+
+    // Prompt for account type
+    printf("Enter the account type (A=Agent | C=Customer): ");
+    account.type = getCharOption("AC"); // Get the user's input and set it to the account type
+
+    printf("\n"); // newline
     
     // ---------------------------------------------------------
     // Person Data: get user input
@@ -67,8 +76,23 @@ int main(void)
     //       when prompting for the birth year data.  There is a function in the 
     //       commonHelpers library that gives you this!
    
-    // !!! <STUDENT CODE HERE> !!!
+    // Prompt for full name
+    printf("Enter the person's full name (%d chars max): ", max_chars_name);
+    getCString(person.fullName, 0, max_chars_name);  // Get the user's input and store the data.
 
+    // Prompt for birth year
+    printf("Enter birth year (current age must be between %d and %d): ", min_age, max_age);
+    person.birthYear = getIntFromRange((currentYear() - max_age), (currentYear() - min_age));  // Get year in range of age.
+
+    // Prompt for household income
+    printf("Enter the household Income: $");
+    person.householdIncome = getPositiveDouble();  // Get the user's input and store the data.
+
+    // Prompt for the country of residence
+    printf("Enter the country (%d chars max.): ", max_chars_country);
+    getCString(person.country, 0, max_chars_country);
+
+    printf("\n"); // newline
     
     
     // ---------------------------------------------------------
