@@ -1,0 +1,24 @@
+==================================================
+Assignment #1 (Milestone #2) Reflection:
+==================================================
+Name   : Zander Maitland
+ID     : 112303219
+Email  : zmaitland@myseneca.ca
+Section: NCC
+
+1. Most of the functions within the commonHelper library were quite easy to program, however, some were harder
+than others. One such example was the getCString function. This was more complicated because it required the use
+of modifying a pointer as well as finding a way to store the string to an intermediary to work with before sending
+it back to the pointer at the end. In order to get past this, I had to declare a char array and work use loops to fill
+it with the appropriate data, then placing a null-terminator at the end. This was more of a logic problem than a software
+bug problem and was easily resolved once I got used to the idea of looping through strings to copy them over.
+
+2. The helper functions library helps to prevent "repeat" code, where there are multiple repetitions of the code in the program.
+By keeping them all in one place and out of the way, the code for those functions does not need to be placed multiple times in the
+program, thus keeping the program shorter and more manageable. It also allows for fixing bugs more easily by having the code
+in a single place so that bugs can be fixed through all uses of the functions in one location.
+
+3. The C programming language's introduction of an ability to create new data types helps with keeping code more organized,
+preventing the need for multiple instances of variables for different instances of the same data type. It also helps keep programming
+more manageable by keeping all related data in the same place. These "sub-variables" are still limited, however to the basic C data types and
+cannot be defined as a new fundamental type. They also cannot overwrite the fundamental types.
