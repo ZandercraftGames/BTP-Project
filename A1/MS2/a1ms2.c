@@ -38,8 +38,6 @@ int main(void)
     // Declare other variables you may need here:
     const int min_age = 18;           // Minimum age to open an account
     const int max_age = 110;          // Maximum age to open an account
-    const int max_chars_name = 30;    // Maximum chars allowed for person's name.
-    const int max_chars_country = 30; // Maximum chars allowed for country name.
 
     printf("Assignment 1 Milestone 2\n");                          // *** DO NOT MODIFY THIS LINE ***
     printf("=============================================\n\n");   // *** DO NOT MODIFY THIS LINE ***
@@ -77,8 +75,8 @@ int main(void)
     //       commonHelpers library that gives you this!
    
     // Prompt for full name
-    printf("Enter the person's full name (%d chars max): ", max_chars_name);
-    getCString(person.fullName, 0, max_chars_name);  // Get the user's input and store the data.
+    printf("Enter the person's full name (30 chars max): ");
+    getCString(person.fullName, 1, 30);  // Get the user's input and store the data.
 
     // Prompt for birth year
     printf("Enter birth year (current age must be between %d and %d): ", min_age, max_age);
@@ -89,8 +87,8 @@ int main(void)
     person.householdIncome = getPositiveDouble();  // Get the user's input and store the data.
 
     // Prompt for the country of residence
-    printf("Enter the country (%d chars max.): ", max_chars_country);
-    getCString(person.country, 0, max_chars_country);
+    printf("Enter the country (30 chars max.): ");
+    getCString(person.country, 1, 30);
 
     printf("\n"); // newline
     
@@ -102,7 +100,16 @@ int main(void)
     printf("----------------------------------------\n"); // *** DO NOT MODIFY THIS LINE ***
 
     // Add the necessary code to get user input for each UserLogin member:
-    // !!! <STUDENT CODE HERE> !!!
+
+    // Prompt for username
+    printf("Enter user login (10 chars max): ");
+    getCString(login.username, 1, 10); // Get the user's input and store the data.
+
+    // Prompt for password
+    printf("Enter the password (must be 8 chars in length): ");
+    getCString(login.password, 8, 8);
+
+    printf("\n"); // newline
 
     
 
@@ -110,7 +117,7 @@ int main(void)
     // ---------------------------------------------------------
 
     // Call function to display the Account record:
-    //________________(__________________________________________);
+    displayAccount(account, login, person);
 
     printf("\nAssignment #1 Milestone #2 completed!\n");  // *** DO NOT MODIFY THIS LINE ***
 
@@ -127,7 +134,14 @@ void displayAccount(const struct Account account, const struct UserLogin login, 
     printf("----- --------- --------------- ----- ----------- ---------- ---------- --------\n");
 
     // Display the respective data to align to the table header above:
-    // !!! <STUDENT CODE HERE> !!!
+    if (account.type == 'A') {
+        printf("%05d %-9s %-15s %5d %11.2lf %-10s %-10s %8s\n", account.ID, "AGENT", person.fullName,
+               person.birthYear, person.householdIncome, person.country, login.username, login.password);
+    } else {
+        printf("%05d %-9s %-15s %5d %11.2lf %-10s %-10s %8s\n", account.ID, "CUSTOMER", person.fullName,
+               person.birthYear, person.householdIncome, person.country, login.username, login.password);
+    }
+
 
 }
 
