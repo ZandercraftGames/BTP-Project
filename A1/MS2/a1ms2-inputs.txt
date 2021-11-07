@@ -1,0 +1,43 @@
+error
+-100
+-100
+200
+error
+-4
+12
+-3
+14
+error
+-150.75
+-22.11
+225.55
+R
+p
+r
+horse
+SENECA
+Seneca College
+IPC
+ipc
+SCHOOL
+50001 Account
+50001
+Agent
+c
+a
+A
+Will Smith
+2004
+1910
+1988
+1 million 5 hundred
+-500.25
+0.0
+188222.75
+CANADA
+Williamson Willie
+MIBAgent-J
+jump
+jumping
+seventeen
+agent007

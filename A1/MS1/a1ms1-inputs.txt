@@ -1,0 +1,22 @@
+error
+-100
+-100
+200
+error
+-4
+12
+-3
+14
+error
+-150.75
+-22.11
+225.55
+R
+p
+r
+horse
+SENECA
+Seneca College
+IPC
+ipc
+SCHOOL
