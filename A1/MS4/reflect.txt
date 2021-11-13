@@ -6,3 +6,23 @@ ID     : 112303219
 Email  : zmaitland@myseneca.ca
 Section: NCC
 
+1. While matching the output exactly can cause many headaches and a very long time to get right in some cases, especially
+when the program has invisible output (white-space) expected, matching the output exactly requires us to write the program
+within the exact specification provided. This likely is a requirement to help to set us up for future programming careers
+that expect a program to be created precisely within a pre-defined specification. This introduces programming with order
+instead of simply allowing a program to be made in whatever manner we feel. This also could help when working with a team, as
+all team members will know what output to expect from my portion of the program and the design will be uniform.
+
+2. When naming a module or library, one must consider if the name describes the functions and structures that
+are available within it. In a program with multiple modules, quite like this one, it can be confusing to identify what
+is contained within each module/library's code at first glance. Naming header and source files the same thing also ties into
+this concept as you will always be able to quickly identify which source file contains the function definitions matching the
+prototypes of the header file. Being able to easily identify what files contain within a project is essential to keeping it
+organized, allowing for bugs to be more easily tracked down and for new function definitions to be placed in the right spot
+without confusion.
+
+3. A cascading menu framework is an application in which user interaction is used to navigate between multiple nested menus.
+One such example from this program is how the user is able to change an account's data. First they are presented with a menu to login.
+After this, the user is presented with the main menu in which they select "2" to modify the account. After inputting a user ID, a menu
+is presented to select what data to update. This type of menu system allows the user to navigate a system of logically-nested
+menus that can display dynamic data based on previous selections.
