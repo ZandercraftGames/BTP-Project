@@ -36,8 +36,8 @@ void displayAccountDetailRecord (const struct Account *account)
     // Iterate through, replacing every other value with an asterisk.
     int i;
     for (i = 0; i < strlen(obf_password); i++) {
-        if (i % 2 == 0) {
-            obf_password[i - 1] = '*'; // Replace the value with an asterisk.
+        if (i % 2 == 1) {
+            obf_password[i] = '*'; // Replace the value with an asterisk.
         }
     }
 
