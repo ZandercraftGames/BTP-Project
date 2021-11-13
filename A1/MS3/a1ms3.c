@@ -2,10 +2,10 @@
 //  Assignment: 1 
 //  Milestone : 3
 // #############################################################################################
-//  Student Name  : 
-//  Student ID    : 
-//  Student Email :
-//  Course Section: 
+//  Student Name  : Zander Maitland
+//  Student ID    : 112303219
+//  Student Email : zmaitland@myseneca.ca
+//  Course Section: NCC
 // #############################################################################################
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -30,25 +30,25 @@ int main(void)
     // Account Data
     // ---------------------------------------------------------
     // Input (new record)
-    //________________(__________________);   // Call function to get user input for a new "Account"
+    getAccount(&account);   // Call function to get user input for a new "Account"
 
     // ---------------------------------------------------------
     // Person Data
     // ---------------------------------------------------------
     // Input (new record)
-    //________________(__________________);   // Call function to get user input for a new "Person"
+    getPerson(&account.person);   // Call function to get user input for a new "Person"
 
     // ---------------------------------------------------------
     // UserLogin Data
     // ---------------------------------------------------------
     // Input (new record)
-    //________________(__________________);   // Call function to get user input for a new "UserLogin"
+    getUserLogin(&account.login);   // Call function to get user input for a new "UserLogin"
 
     // ---------------------------------------------------------
     // Display formatted Account details
     // ---------------------------------------------------------
-    //_______________________________;         // Call function to display the account detail header
-    // ________________(__________________);   // Call function to display an account detail record
+    displayAccountDetailHeader();         // Call function to display the account detail header
+    displayAccountDetailRecord(&account);   // Call function to display an account detail record
 
     putchar('\n');
     printf("Account, Person, and User Login test completed!\n");  // *** DO NOT MODIFY THIS LINE ***

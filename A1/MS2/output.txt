@@ -1,0 +1,135 @@
+Script started on Fri 05 Nov 2021 11:48:12 PM EDT
+Assignment 1 Milestone 2
+=============================================
+
+TEST #1 - Instructions:
+1) Enter the word 'error'  [ENTER]
+2) Enter the number '-100' [ENTER]
+:>error
+ERROR: Value must be an integer: -100
+////////////////////////////////////////
+TEST #1 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #2 - Instructions:
+1) Enter the number '-100' [ENTER]
+2) Enter the number '200'  [ENTER]
+:>-100
+ERROR: Value must be a positive integer greater than zero: 200
+////////////////////////////////////////
+TEST #2 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #3 - Instructions:
+1) Enter the word 'error' [ENTER]
+2) Enter the number '-4'  [ENTER]
+3) Enter the number '12'  [ENTER]
+4) Enter the number '-3'  [ENTER]
+:>error
+ERROR: Value must be an integer: -4
+ERROR: Value must be between -3 and 11 inclusive: 12
+ERROR: Value must be between -3 and 11 inclusive: -3
+////////////////////////////////////////
+TEST #3 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #4 - Instructions:
+1) Enter the number '14' [ENTER]
+:>14
+////////////////////////////////////////
+TEST #4 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #5 - Instructions:
+1) Enter the word 'error'     [ENTER]
+2) Enter the number '-150.75' [ENTER]
+:>error
+ERROR: Value must be a double floating-point number: -150.75
+////////////////////////////////////////
+TEST #5 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #6 - Instructions:
+1) Enter the number '-22.11' [ENTER]
+2) Enter the number '225.55' [ENTER]
+:>-22.11
+ERROR: Value must be a positive double floating-point number: 225.55
+////////////////////////////////////////
+TEST #6 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #7 - Instructions:
+1) Enter the character 'R' [ENTER]
+2) Enter the character 'p' [ENTER]
+3) Enter the character 'r' [ENTER]
+:>R
+ERROR: Character must be one of [qwerty]: p
+ERROR: Character must be one of [qwerty]: r
+////////////////////////////////////////
+TEST #7 RESULT: *** PASS *** 
+////////////////////////////////////////
+
+TEST #8: - Instructions:
+1) Enter the word 'horse'  [ENTER]
+2) Enter the word 'SENECA' [ENTER]
+:>horse
+ERROR: String length must be exactly 6 chars: SENECA
+////////////////////////////////////////
+TEST #8 RESULT: SENECA (Answer: SENECA)
+////////////////////////////////////////
+
+TEST #9: - Instructions:
+1) Enter the words 'Seneca College' [ENTER]
+2) Enter the word 'IPC'             [ENTER]
+:>Seneca College
+ERROR: String length must be no more than 6 chars: IPC
+////////////////////////////////////////
+TEST #9 RESULT: IPC (Answer: IPC)
+////////////////////////////////////////
+
+TEST #10: - Instructions:
+1) Enter the word 'ipc'    [ENTER]
+2) Enter the word 'SCHOOL' [ENTER]
+:>ipc
+ERROR: String length must be between 4 and 6 chars: SCHOOL
+////////////////////////////////////////
+TEST #10 RESULT: SCHOOL (Answer: SCHOOL)
+////////////////////////////////////////
+
+Account Data Input
+----------------------------------------
+Enter the account number: 50001 Account
+ERROR: Value must be an integer: 50001
+Enter the account type (A=Agent | C=Customer): Agent
+ERROR: Character must be one of [AC]: c
+ERROR: Character must be one of [AC]: a
+ERROR: Character must be one of [AC]: A
+
+Person Data Input
+----------------------------------------
+Enter the person's full name (30 chars max): Will Smith
+Enter birth year (current age must be between 18 and 110): 2004
+ERROR: Value must be between 1911 and 2003 inclusive: 1910
+ERROR: Value must be between 1911 and 2003 inclusive: 1988
+Enter the household Income: $1 million 5 hundred
+ERROR: Value must be a double floating-point number: -500.25
+ERROR: Value must be a positive double floating-point number: 0.0
+ERROR: Value must be a positive double floating-point number: 188222.75
+Enter the country (30 chars max.): CANADA
+
+User Login Data Input
+----------------------------------------
+Enter user login (10 chars max): Williamson Willie
+ERROR: String length must be no more than 10 chars: MIBAgent-J
+Enter the password (must be 8 chars in length): jump
+ERROR: String length must be exactly 8 chars: jumping
+ERROR: String length must be exactly 8 chars: seventeen
+ERROR: String length must be exactly 8 chars: agent007
+
+Acct# Acct.Type Full Name       Birth Income      Country    Login      Password
+----- --------- --------------- ----- ----------- ---------- ---------- --------
+50001 AGENT     Will Smith       1988   188222.75 CANADA     MIBAgent-J agent007
+
+Assignment #1 Milestone #2 completed!
+
+Script done on Fri 05 Nov 2021 11:52:32 PM EDT
