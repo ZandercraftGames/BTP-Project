@@ -1,0 +1,40 @@
+Script started on Sat 09 Oct 2021 10:18:12 PM EDT
+Assignment 1 Milestone 3 - Tester
+=============================================
+Account Data: New Record
+----------------------------------------
+Enter the account number: 50001 Account
+ERROR: Value must be an integer: 50001
+Enter the account type (A=Agent | C=Customer): Agent
+ERROR: Character must be one of [AC]: c
+ERROR: Character must be one of [AC]: a
+ERROR: Character must be one of [AC]: A
+
+Person Data Input
+----------------------------------------
+Enter the person's full name (30 chars max): Will Smith
+Enter birth year (current age must be between 18 and 110): 2004
+ERROR: Value must be between 1911 and 2003 inclusive: 1910
+ERROR: Value must be between 1911 and 2003 inclusive: 1988
+Enter the household Income: $1 million 5 hundred
+ERROR: Value must be a double floating-point number: -500.25
+ERROR: Value must be a positive double floating-point number: 0.0
+ERROR: Value must be a positive double floating-point number: 188222.75
+Enter the country (30 chars max.): CANADA
+
+User Login Data Input
+----------------------------------------
+Enter user login (10 chars max): Williamson Willie
+ERROR: String length must be no more than 10 chars: MIBAgent-J
+Enter the password (must be 8 chars in length): jump
+ERROR: String length must be exactly 8 chars: jumping
+ERROR: String length must be exactly 8 chars: seventeen
+ERROR: String length must be exactly 8 chars: agent007
+
+Acct# Acct.Type Full Name       Birth Income      Country    Login      Password
+----- --------- --------------- ----- ----------- ---------- ---------- --------
+50001 AGENT     Will Smith       1988   188222.75 CANADA     MIBAgent-J a*e*t*0*
+
+Account, Person, and User Login test completed!
+
+Script done on Sat 09 Oct 2021 10:18:24 PM EDT
