@@ -91,8 +91,10 @@ void displayAllAccountDetailRecords (const struct Account accounts[], int max_ac
     // Loop through all values
     int i;
     for (i = 0; i < max_accounts; i++) {
-        // Print the record in the table
-        displayAccountDetailRecord(&accounts[i]);
+        // Print the record in the table if the account exists
+        if (accounts[i].ID != 0) {
+            displayAccountDetailRecord(&accounts[i]);
+        }
     }
 }
 
@@ -163,11 +165,12 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
     int done = 0;
     int user_choice;
 
-    // Display the logged-in user
-    printf("\n"
-           "%s: %s (%d)\n", (user.type == 'A') ? "AGENT" : "CUSTOMER", user.person.fullName, user.ID);
+    putchar('\n'); // newline
 
     while (!done) {
+        // Display the logged-in user
+        printf("%s: %s (%d)\n", (user.type == 'A') ? "AGENT" : "CUSTOMER", user.person.fullName, user.ID);
+
         // Display main menu system
         printf("==============================================\n"
                "Account Ticketing System - Agent Menu\n"
@@ -188,29 +191,105 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
         switch (user_choice) {
             case 1:
                 // The user wishes to add a new account
+                int new_account_index = -1;
 
                 // Find an empty index
                 int i;
                 for (i = 0; i < max_accounts; i++) {
-                    if (accounts[i].)
+                    // Check if record is populated by checking if account type exists and ID is 0.
+                    if (accounts[i].ID == 0) {
+                        new_account_index = i; // Found record, save index.
+                        break;
+                    }
                 }
 
-                getAccount();
+                // Check if a blank record was found
+                if (new_account_index != -1) {
+                    getAccount(&accounts[new_account_index]); // Make the account at the index.
+
+                    // Pause execution after account made.
+                    pauseExecution();
+                } else {
+                    printf("ERROR: Account listing is FULL, call ITS Support!\n");
+                }
                 break;
             case 2:
                 // The user wishes to modify an existing account
+                int modify_account_ID;
+                int modify_account_index;
+
+                // Prompt user for account number
+                printf("Enter the account#: ");
+                modify_account_ID = getPositiveInteger();
+
+                // Get the account with the number
+                modify_account_index = findAccountIndexByAcctNum(modify_account_ID, accounts, max_accounts, 0);
+
+                putchar('\n'); // newline
+
+                // If the number exists
+                if (modify_account_index != -1) {
+                    updateAccount(&accounts[modify_account_index]);
+                } else {
+                    printf("ERROR: This account does not exist!\n"); // NOTE: Sample output does not contain the error, so made up one.
+                }
 
                 break;
             case 3:
                 // The user wishes to remove an account
+                int remove_account_ID;
+                int remove_account_index;
+                char confirmation;
+
+                // Prompt user for account number
+                printf("Enter the account#: ");
+                remove_account_ID = getPositiveInteger();
+
+                // Check if is user's ID
+                if (remove_account_ID == user.ID) {
+                    printf("\nERROR: You can't remove your own account!\n");
+                    putchar('\n');
+                } else {
+                    // Get the account with the number
+                    remove_account_index = findAccountIndexByAcctNum(remove_account_ID, accounts, max_accounts, 0);
+
+                    if (remove_account_index != -1) {
+                        // Account exists, print table header and record
+                        displayAccountDetailHeader();
+                        displayAccountDetailRecord(&accounts[remove_account_index]);
+                        putchar('\n'); // newline
+
+                        // Prompt user for confirmation
+                        printf("Are you sure you want to remove this record? ([Y]es | [N]o): ");
+                        confirmation = getCharOption("yYnN");
+
+                        if (confirmation == 'Y') {
+                            // Remove the account by setting the ID to zero
+                            accounts[remove_account_index].ID = 0;
+                            putchar('\n'); // newline
+                            printf("*** Account Removed! ***\n");
+                        }
+                        putchar('\n'); // newline
+
+
+                    } else {
+                        printf("\nERROR: This account does not exist!\n");
+                        putchar('\n'); // newline
+                    }
+                }
+                pauseExecution();
 
                 break;
             case 4:
                 // The user wishes to list all accounts
-
+                displayAllAccountDetailRecords(accounts, max_accounts);
+                putchar('\n'); // newline
+                pauseExecution();
                 break;
             case 0:
                 // The user wishes to log out
+                printf("### LOGGED OUT ###\n");
+                putchar('\n'); // newline
                 done = 1;
         }
     }
@@ -222,10 +301,24 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
 void applicationStartup (struct Account accounts[], int num_accounts)
 {
     int account_index;
-    account_index = menuLogin(accounts, num_accounts);  // Call the login and get the account index of the logged-in user
+    int done = 0;
 
-    // Call main menu
-    menuAgent(accounts, num_accounts, accounts[account_index]);
+    while (!done) {
+        account_index = menuLogin(accounts,
+                                  num_accounts);  // Call the login and get the account index of the logged-in user
 
+        // Was a user logged in? Or did the user select to exit the program?
+        if (account_index != -1) {
+            // Call main menu
+            menuAgent(accounts, num_accounts, accounts[account_index]);
+            done = 0;
+        } else {
+            // User logged out. Terminate
+            printf("\n==============================================\n"
+                   "Account Ticketing System - Terminated\n"
+                   "==============================================\n");
+            done = 1;
+        }
+    }
 }
 

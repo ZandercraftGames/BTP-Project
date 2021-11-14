@@ -8,8 +8,11 @@
 	Section: NCC
 */
 
+#define _CRT_SECURE_NO_WARNINGS
+
 // Library Imports
 #include <stdio.h>
+#include <string.h>
 #include "commonHelpers.h"
 #include "account.h"
 
@@ -26,6 +29,7 @@ void getAccount (struct Account *account) {
     // Prompt for account number
     printf("Enter the account number: ");
     account->ID = getInteger();  // Get the user's input and set it to the account ID
+    putchar('\n'); // newline
 
     // Prompt for account type
     printf("Enter the account type (A=Agent | C=Customer): ");
@@ -38,7 +42,11 @@ void getAccount (struct Account *account) {
     // Prompt for login info if agent
     if (account->type == 'A') {
         getUserLogin(&account->login);   // Call function to get user input for a new "UserLogin"
+        putchar('\n'); // newline
     }
+
+    // Confirmation
+    printf("*** New account added! ***\n\n");
 }
 
 // Get the details of a person from the user.
@@ -82,7 +90,6 @@ void getUserLogin (struct UserLogin *login)
     printf("Enter the password (must be 8 chars in length): ");
     getCString(login->password, 8, 8);
 
-    printf("\n"); // newline
 }
 
 // Update an account's information
@@ -107,14 +114,19 @@ void updateAccount (struct Account *account)
         switch (user_choice) {
             case 1:
                 // The user wishes to change the account type
-                printf("\nEnter the account type (A=Agent | C=Customer): ");
+                printf("Enter the account type (A=Agent | C=Customer): ");
                 account->type = getCharOption("AC");
 
                 if (account->type == 'A') {
                     // Prompt for login information for agent account
-                    printf("Agent type accounts require a user login. Please enter this information now: ");
+                    printf("\nAgent type accounts require a user login. Please enter this information now:\n\n");
                     getUserLogin(&account->login);
+                } else {
+                    // Changed to customer, so clear login and password
+                    strcpy(account->login.username, "");
+                    strcpy(account->login.password, "");
                 }
+                putchar('\n'); // newline
                 break;
             case 2:
                 // The user wishes to update the person values
@@ -124,7 +136,7 @@ void updateAccount (struct Account *account)
                 // The user wishes to update the login values
                 if (account->type == 'C') {
                     // Customer account. Should not have login info
-                    printf("ERROR:  Customer account types don't have user logins!");
+                    printf("ERROR:  Customer account types don't have user logins!\n\n");
                 } else {
                     // Agent account, call update login function
                     updateUserLogin(&account->login);
@@ -158,19 +170,21 @@ void updatePerson (struct Person *person)
         switch (user_choice) {
             case 1:
                 // The user wishes to change the person name
-                printf("\nEnter the person's full name (30 chars max): ");
+                printf("Enter the person's full name (30 chars max): ");
                 getCString(person->fullName, 1, 30);
-
+                putchar('\n'); // newline
                 break;
             case 2:
                 // The user wishes to update the person income
                 printf("Enter the household Income: $");
                 person->householdIncome = getPositiveDouble();
+                putchar('\n'); // newline
                 break;
             case 3:
                 // The user wishes to update the person country
                 printf("Enter the country (30 chars max.): ");
                 getCString(person->country, 1, 30);
+                putchar('\n'); // newline
                 break;
             case 0:
                 done = 1;
@@ -189,7 +203,7 @@ void updateUserLogin (struct UserLogin *login)
                "----------------------------------------\n"
                "1) Password\n"
                "0) Done\n"
-               "Selection: ");
+               "Selection: ", login->username);
 
         user_choice = getIntFromRange(0, 1); // Get the user's input
 
@@ -198,8 +212,9 @@ void updateUserLogin (struct UserLogin *login)
         switch (user_choice) {
             case 1:
                 // The user wishes to change the person name
-                printf("\nEnter the password (must be 8 chars in length): ");
+                printf("Enter the password (must be 8 chars in length): ");
                 getCString(login->password, 8, 8);
+                putchar('\n'); // newline
                 break;
             case 0:
                 done = 1;
