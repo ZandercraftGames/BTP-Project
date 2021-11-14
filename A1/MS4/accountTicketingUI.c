@@ -61,7 +61,6 @@ int findAccountIndexByAcctNum (int account_num, const struct Account accounts[],
 {
     // Variable Declarations
     int account_num_index = -1;
-    int return_value = -1; // By default, set to -1
 
     // Is the function supposed to prompt for the account number?
     if (prompt_for_num) {
@@ -157,13 +156,21 @@ int menuLogin (const struct Account accounts[], int max_accounts)
         }
         correct = 0;
     }
+    return -1;
 }
 
 void menuAgent (struct Account accounts[], int max_accounts, const struct Account user)
 {
     // Variable Declarations
     int done = 0;
-    int user_choice;
+    int user_choice;            // The choice that the user has selected in the menu
+    int new_account_index = -1; // keeps track of an empty index for use in making new accounts
+    int modify_account_ID;      // The account ID entered by the user when modifying an account
+    int modify_account_index;   // The index of the aforementioned account id
+    int remove_account_ID;      // The account ID entered by the user when removing an account
+    int remove_account_index;   // The index of the aforementioned account ID
+    char confirmation;          // Keeps track of answer by user for account removal confirmation
+    int i;                      // Iteration variable (moved here because of an annoying compiler error)
 
     putchar('\n'); // newline
 
@@ -191,10 +198,7 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
         switch (user_choice) {
             case 1:
                 // The user wishes to add a new account
-                int new_account_index = -1;
-
                 // Find an empty index
-                int i;
                 for (i = 0; i < max_accounts; i++) {
                     // Check if record is populated by checking if account type exists and ID is 0.
                     if (accounts[i].ID == 0) {
@@ -215,9 +219,6 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                 break;
             case 2:
                 // The user wishes to modify an existing account
-                int modify_account_ID;
-                int modify_account_index;
-
                 // Prompt user for account number
                 printf("Enter the account#: ");
                 modify_account_ID = getPositiveInteger();
@@ -237,10 +238,6 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                 break;
             case 3:
                 // The user wishes to remove an account
-                int remove_account_ID;
-                int remove_account_index;
-                char confirmation;
-
                 // Prompt user for account number
                 printf("Enter the account#: ");
                 remove_account_ID = getPositiveInteger();
@@ -260,7 +257,7 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                         putchar('\n'); // newline
 
                         // Prompt user for confirmation
-                        printf("Are you sure you want to remove this record? ([Y]es | [N]o): ");
+                        printf("Are you sure you want to remove this record? ([Y]es|[N]o): ");
                         confirmation = getCharOption("yYnN");
 
                         if (confirmation == 'Y') {

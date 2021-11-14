@@ -100,7 +100,7 @@ void updateAccount (struct Account *account)
 
     while (!done) {
         // Print header with prompt
-        printf("Update Account %d (%s)\n"
+        printf("Update Account: %d (%s)\n"
                "----------------------------------------\n"
                "1) Update account type (current value: %c)\n"
                "2) Person\n"
@@ -119,7 +119,7 @@ void updateAccount (struct Account *account)
 
                 if (account->type == 'A') {
                     // Prompt for login information for agent account
-                    printf("\nAgent type accounts require a user login. Please enter this information now:\n\n");
+                    printf("\nAgent type accounts require a user login.  Please enter this information now:\n\n");
                     getUserLogin(&account->login);
                 } else {
                     // Changed to customer, so clear login and password
