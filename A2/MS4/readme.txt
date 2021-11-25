@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------
-# Data File Maintenance
+Data File Maintenance
 -------------------------------------------------------------------------
 
 Each time you execute your program, the original accounts.txt and 
@@ -17,7 +17,7 @@ script file to make resetting easier.  There are two variations of the
 script file depending on which platform you are using.
 
 -------------------------------------------------------------------------
-## Windows: "WinReset.bat"
+Windows: "WinReset.bat"
 -------------------------------------------------------------------------
 
 On the Windows platform, all you have to do is double click the
@@ -25,7 +25,7 @@ On the Windows platform, all you have to do is double click the
 accounts.txt and tickets.txt files.
 
 -------------------------------------------------------------------------
-## Linux or Mac: "LinMacReset.sh"
+Linux or Mac: "LinMacReset.sh"
 -------------------------------------------------------------------------
 
 On the Linux or Mac platforms, you will need to open a terminal window 
