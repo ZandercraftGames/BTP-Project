@@ -4,5 +4,5 @@ project(BTP_Project C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(BTP_Project
-        A1/MS4/a1ms4.c A1/MS4/commonHelpers.h A1/MS4/commonHelpers.c A1/MS4/account.h A1/MS4/account.c
-        A1/MS4/accountTicketingUI.h A1/MS4/accountTicketingUI.c)
+        A2/MS1/a2ms1.c A2/MS1/commonHelpers.h A2/MS1/commonHelpers.c A2/MS1/account.h A2/MS1/account.c
+        A2/MS1/accountTicketingUI.h A2/MS1/accountTicketingUI.c)
