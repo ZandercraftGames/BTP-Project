@@ -44,4 +44,8 @@ char getCharOption (const char* validChars);
 // maxChars  - maximum string length
 void getCString (char *stringVar, int minChars, int maxChars);
 
+// Convert a C-string to uppercase.
+// stringVar - pointer to string variable
+void strToUpper (char *stringVar);
+
 #endif // !COMMON_HELPERS_H_

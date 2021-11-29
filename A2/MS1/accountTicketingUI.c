@@ -16,6 +16,7 @@
 #include <string.h>
 #include "commonHelpers.h"
 #include "account.h"
+#include "ticket.h"
 
 // Display the account detail table header
 void displayAccountDetailHeader (void)
@@ -159,7 +160,7 @@ int menuLogin (const struct Account accounts[], int max_accounts)
     return -1;
 }
 
-void menuAgent (struct Account accounts[], int max_accounts, const struct Account user)
+void menuAgent (struct AccountTicketingData *account_data, const struct Account user)
 {
     // Variable Declarations
     int done = 0;
@@ -171,6 +172,8 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
     int remove_account_index;   // The index of the aforementioned account ID
     char confirmation;          // Keeps track of answer by user for account removal confirmation
     int i;                      // Iteration variable (moved here because of an annoying compiler error)
+    int highest_account_num = 0;    // Keeps track of the highest account number to allow for the addition of it automatically.
+    int zero_not_found = 1;         // Keeps track of if the index of where the account array isn't populated has been found.
 
     putchar('\n'); // newline
 
@@ -187,11 +190,17 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                "3) Remove an account\n"
                "4) List accounts: detailed view\n"
                "----------------------------------------------\n"
+               "5) List new tickets\n"
+               "6) List active tickets\n"
+               "7) List closed tickets\n"
+               "8) Add a new ticket\n"
+               "9) Manage a ticket\n"
+               "----------------------------------------------\n"
                "0) Logout\n"
                "\n"
                "Selection: ");
 
-        user_choice = getIntFromRange(0, 4); // Get the user's input
+        user_choice = getIntFromRange(0, 9); // Get the user's input
 
         printf("\n"); // newline
 
@@ -199,17 +208,24 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
             case 1:
                 // The user wishes to add a new account
                 // Find an empty index
-                for (i = 0; i < max_accounts; i++) {
+                for (i = 0; i < account_data->ACCOUNT_MAX_SIZE; i++) {
                     // Check if record is populated by checking if account type exists and ID is 0.
-                    if (accounts[i].ID == 0) {
+                    if (account_data->accounts[i].ID == 0 && zero_not_found) {
                         new_account_index = i; // Found record, save index.
-                        break;
+                        zero_not_found = 0;
+                    }
+                    if (account_data->accounts[i].ID >= highest_account_num) {
+                        highest_account_num = account_data->accounts[i].ID;
                     }
                 }
 
                 // Check if a blank record was found
                 if (new_account_index != -1) {
-                    getAccount(&accounts[new_account_index]); // Make the account at the index.
+                    account_data->accounts[new_account_index].ID = highest_account_num + 1; // Set the account ID
+
+                    printf("New Account Data (Account#:%d)\n"
+                           "----------------------------------------\n", account_data->accounts[new_account_index].ID);
+                    getAccount(&account_data->accounts[new_account_index]); // Make the account at the index.
 
                     // Pause execution after account made.
                     pauseExecution();
@@ -224,13 +240,13 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                 modify_account_ID = getPositiveInteger();
 
                 // Get the account with the number
-                modify_account_index = findAccountIndexByAcctNum(modify_account_ID, accounts, max_accounts, 0);
+                modify_account_index = findAccountIndexByAcctNum(modify_account_ID, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
 
                 putchar('\n'); // newline
 
                 // If the number exists
                 if (modify_account_index != -1) {
-                    updateAccount(&accounts[modify_account_index]);
+                    updateAccount(&account_data->accounts[modify_account_index]);
                 } else {
                     printf("ERROR: This account does not exist!\n"); // NOTE: Sample output does not contain the error, so made up one.
                 }
@@ -248,12 +264,12 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                     putchar('\n');
                 } else {
                     // Get the account with the number
-                    remove_account_index = findAccountIndexByAcctNum(remove_account_ID, accounts, max_accounts, 0);
+                    remove_account_index = findAccountIndexByAcctNum(remove_account_ID, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
 
                     if (remove_account_index != -1) {
                         // Account exists, print table header and record
                         displayAccountDetailHeader();
-                        displayAccountDetailRecord(&accounts[remove_account_index]);
+                        displayAccountDetailRecord(&account_data->accounts[remove_account_index]);
                         putchar('\n'); // newline
 
                         // Prompt user for confirmation
@@ -262,7 +278,7 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
 
                         if (confirmation == 'Y') {
                             // Remove the account by setting the ID to zero
-                            accounts[remove_account_index].ID = 0;
+                            account_data->accounts[remove_account_index].ID = 0;
                             putchar('\n'); // newline
                             printf("*** Account Removed! ***\n");
                         }
@@ -279,7 +295,37 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
                 break;
             case 4:
                 // The user wishes to list all accounts
-                displayAllAccountDetailRecords(accounts, max_accounts);
+                displayAllAccountDetailRecords(account_data->accounts, account_data->ACCOUNT_MAX_SIZE);
+                putchar('\n'); // newline
+                pauseExecution();
+                break;
+            case 5:
+                // TODO: List new tickets function
+                printf("Feature #5 currently unavailable!\n");
+                putchar('\n'); // newline
+                pauseExecution();
+                break;
+            case 6:
+                // TODO: List active tickets function
+                printf("Feature #6 currently unavailable!\n");
+                putchar('\n'); // newline
+                pauseExecution();
+                break;
+            case 7:
+                // TODO: List closed tickets function
+                printf("Feature #7 currently unavailable!\n");
+                putchar('\n'); // newline
+                pauseExecution();
+                break;
+            case 8:
+                // TODO: Add a new ticket function
+                printf("Feature #8 currently unavailable!\n");
+                putchar('\n'); // newline
+                pauseExecution();
+                break;
+            case 9:
+                // TODO: Manage a ticket function
+                printf("Feature #9 currently unavailable!\n");
                 putchar('\n'); // newline
                 pauseExecution();
                 break;
@@ -295,19 +341,19 @@ void menuAgent (struct Account accounts[], int max_accounts, const struct Accoun
 
 
 // Entry point to application
-void applicationStartup (struct Account accounts[], int num_accounts)
+void applicationStartup (struct AccountTicketingData *account_data)
 {
     int account_index;
     int done = 0;
 
     while (!done) {
-        account_index = menuLogin(accounts,
-                                  num_accounts);  // Call the login and get the account index of the logged-in user
+        account_index = menuLogin(account_data->accounts,
+                                  account_data->ACCOUNT_MAX_SIZE);  // Call the login and get the account index of the logged-in user
 
         // Was a user logged in? Or did the user select to exit the program?
         if (account_index != -1) {
             // Call main menu
-            menuAgent(accounts, num_accounts, accounts[account_index]);
+            menuAgent(account_data, account_data->accounts[account_index]);
             done = 0;
         } else {
             // User logged out. Terminate

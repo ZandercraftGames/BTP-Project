@@ -14,6 +14,8 @@
 // Library Imports
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
+#include <ctype.h>
 #include "commonHelpers.h"
 
 // Uses the time.h library to obtain current year information
@@ -151,15 +153,11 @@ int getIntFromRange (int low, int high)
         } else {
             // An invalid value was received.
             printf("ERROR: Value must be between %d and %d inclusive: ", low, high); // Show error
-            if (intVal == -1) {
-                printf("login\n"
-                       "ERROR: Value must be an integer: ");
-                // I have tried literally everything I can think of and have been here for hours just trying to figure
-                // out why UNIX behaves differently (creating a loop on input of "login") then windows when running the
-                // getInteger() function after this and the user inputs a word. Doesn't happen on Windows, only on UNIX.
-                // I am fine with losing points in the assignment for this as it appears to be a parity issue between Windows
-                // and UNIX and I need to get this submitted. It works perfectly on Windows.
-            }
+                /* TODO: I have tried everything I can think of and have been here for hours just trying to figure
+                * out why UNIX behaves differently (creating a loop on input of a string) than windows when running the
+                * getInteger() function after this and the user inputs a word. Doesn't happen on Windows, only on UNIX.
+                * It appears to be a parity issue between Windows and UNIX. It works perfectly on Windows.
+                */
         }
     }
 
@@ -249,6 +247,20 @@ void getCString (char *stringVar, int minChars, int maxChars)
             clearStandardInputBuffer();  // Clear the input buffer to prevent issues.
             printf("ERROR: String length must be between %d and %d chars: ", minChars, maxChars);
             correct = 0;
+        }
+    }
+}
+
+// Convert a C-string to uppercase.
+// stringVar - pointer to string variable
+void strToUpper (char *stringVar) {
+    // Loop through all characters
+    int i;
+    for (i = 0; stringVar[i] != '\0'; i++) {
+        // Check if character is lowercase
+        if (islower(stringVar[i])) {
+            // Convert the character to uppercase.
+            stringVar[i] = toupper(stringVar[i]);
         }
     }
 }

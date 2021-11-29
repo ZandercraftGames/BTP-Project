@@ -13,6 +13,7 @@
 // Library Imports
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "commonHelpers.h"
 #include "account.h"
 
@@ -22,15 +23,6 @@ const int max_age = 110;          // Maximum age to open an account
 
 // Get the details of an account from the user.
 void getAccount (struct Account *account) {
-    // Print Information header
-    printf("Account Data: New Record\n"
-           "----------------------------------------\n");
-
-    // Prompt for account number
-    printf("Enter the account number: ");
-    account->ID = getInteger();  // Get the user's input and set it to the account ID
-    putchar('\n'); // newline
-
     // Prompt for account type
     printf("Enter the account type (A=Agent | C=Customer): ");
     account->type = getCharOption("AC"); // Get the user's input and set it to the account type
@@ -71,6 +63,7 @@ void getPerson (struct Person *person)
     // Prompt for the country of residence
     printf("Enter the country (30 chars max.): ");
     getCString(person->country, 1, 30);
+    strToUpper(person->country);  // Convert to uppercase.
 
     printf("\n"); // newline
 }
@@ -78,18 +71,74 @@ void getPerson (struct Person *person)
 // Get an account's login details from the user.
 void getUserLogin (struct UserLogin *login)
 {
+    int correct = 0;
+    int i;
+
     // Print Information Header
     printf("User Login Data Input\n"
            "----------------------------------------\n");
 
-    // Prompt for username
-    printf("Enter user login (10 chars max): ");
-    getCString(login->username, 1, 10); // Get the user's input and store the data.
+    // Get username (with validation to guarantee no spaces)
+    while (!correct) {
+        // Prompt for username
+        printf("Enter user login (10 chars max): ");
+        getCString(login->username, 1, 10); // Get the user's input and store the data.
+        for (i = 0; login->username[i] != '\0'; i++) {
+            if (isspace(login->username[i])) {
+                correct = 0;
+                printf("ERROR:  The user login must NOT contain whitespace characters.\n");
+                break;
+            } else if (i == strlen(login->username) - 1) {
+                // If last char and not space, then correct.
+                correct = 1;
+            }
+        }
 
-    // Prompt for password
-    printf("Enter the password (must be 8 chars in length): ");
-    getCString(login->password, 8, 8);
+    }
+    correct = 0; // reset for next use
 
+    // Get password (with validation of proper chars)
+    while (!correct) {
+        // Password Validation Variables
+        int digits = 0;
+        int uppercase = 0;
+        int lowercase = 0;
+        int symbol = 0;
+        int j;
+
+        // Prompt for password
+        printf("Enter the password (must be 8 chars in length): ");
+        getCString(login->password, 8, 8);
+
+        // Loop through characters
+        for (j = 0; login->password[j] != '\0'; j++) {
+            if (isdigit(login->password[j])) {
+                digits += 1;
+            } else if (isupper(login->password[j])) {
+                uppercase += 1;
+            } else if (islower(login->password[j])) {
+                lowercase += 1;
+            } else {
+                switch (login->password[j]) {
+                    case '!': case '@': case '#': case '$': case '%': case '^': case '&': case '*':
+                        symbol += 1;
+                        break;
+                }
+            }
+        }
+
+        if (digits >= 2 && uppercase >= 2 && lowercase >= 2 && symbol >= 2) {
+            correct = 1;
+        } else {
+            // Not correct chars. Print error and prompt again.
+            printf("SECURITY: Password must contain 2 of each:\n"
+                   "          Digit: 0-9\n"
+                   "          UPPERCASE character\n"
+                   "          lowercase character\n"
+                   "          symbol character: !@#$%%^&*\n");
+            correct = 0;
+        }
+    }
 }
 
 // Update an account's information
@@ -184,6 +233,8 @@ void updatePerson (struct Person *person)
                 // The user wishes to update the person country
                 printf("Enter the country (30 chars max.): ");
                 getCString(person->country, 1, 30);
+                strToUpper(person->country);  // Convert to uppercase
+
                 putchar('\n'); // newline
                 break;
             case 0:
@@ -196,6 +247,7 @@ void updatePerson (struct Person *person)
 void updateUserLogin (struct UserLogin *login)
 {
     int done = 0;
+    int correct = 0;
     int user_choice;
 
     while (!done) {
@@ -211,9 +263,51 @@ void updateUserLogin (struct UserLogin *login)
 
         switch (user_choice) {
             case 1:
-                // The user wishes to change the person name
-                printf("Enter the password (must be 8 chars in length): ");
-                getCString(login->password, 8, 8);
+                // The user wishes to change the password
+
+                // Get password (with validation of proper chars)
+                while (!correct) {
+                    // Password Validation Variables
+                    int digits = 0;
+                    int uppercase = 0;
+                    int lowercase = 0;
+                    int symbol = 0;
+                    int j;
+
+                    // Prompt for password
+                    printf("Enter the password (must be 8 chars in length): ");
+                    getCString(login->password, 8, 8);
+
+                    // Loop through characters
+                    for (j = 0; login->password[j] != '\0'; j++) {
+                        if (isdigit(login->password[j])) {
+                            digits += 1;
+                        } else if (isupper(login->password[j])) {
+                            uppercase += 1;
+                        } else if (islower(login->password[j])) {
+                            lowercase += 1;
+                        } else {
+                            switch (login->password[j]) {
+                                case '!': case '@': case '#': case '$': case '%': case '^': case '&': case '*':
+                                    symbol += 1;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (digits >= 2 && uppercase >= 2 && lowercase >= 2 && symbol >= 2) {
+                        correct = 1;
+                    } else {
+                        // Not correct chars. Print error and prompt again.
+                        printf("SECURITY: Password must contain 2 of each:\n"
+                               "          Digit: 0-9\n"
+                               "          UPPERCASE character\n"
+                               "          lowercase character\n"
+                               "          symbol character: !@#$%%^&*\n");
+                        correct = 0;
+                    }
+                }
+
                 putchar('\n'); // newline
                 break;
             case 0:

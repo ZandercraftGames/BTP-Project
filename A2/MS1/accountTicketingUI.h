@@ -7,6 +7,8 @@
 	Email  : zmaitland@myseneca.ca
 	Section: NCC
 */
+#include "account.h"
+#include "ticket.h"
 
 #ifndef ACCOUNT_TICKETING_UI_H_
 #define ACCOUNT_TICKETING_UI_H_
@@ -34,10 +36,10 @@ void displayAllAccountDetailRecords (const struct Account accounts[], int max_ac
 int menuLogin (const struct Account accounts[], int max_accounts);
 
 // Display the main menu
-void menuAgent (struct Account accounts[], int max_accounts, const struct Account user);
+void menuAgent (struct AccountTicketingData *account_data, const struct Account user);
 
 
 // Entry point to application
-void applicationStartup (struct Account accounts[], int max_accounts);
+void applicationStartup (struct AccountTicketingData *account_data);
 
 #endif // !ACCOUNT_TICKETING_UI_H_
