@@ -6,3 +6,30 @@ ID     : 112303219
 Email  : zmaitland@myseneca.ca
 Section: NCC
 
+    1. My favourite string library function that I have used in this application would certainly
+       be the strlen() function. While it may seem like a very basic choice, it is the little things,
+       like this function, that make a significant difference. This function allows you to quickly and easily obtain
+       the length of a string that is received. Instead of `for(len = 0; str[len] != '\0'; len++)`, to count for i,
+       you can simply use strlen(str) to determine the length of the string.
+
+1: void strToUpper (char *stringVar);
+   This function, in commonHelpers, converts the string that is provided to it to fully uppercase.
+   This helped with the country modification functions, keeping the code in one place. This, while used
+   mainly in the account context, is quite universally useful, so I put it into commonHelpers
+
+2: int hasValidChars(char *stringVar, int digits, int upper, int lower, int symbol);
+   This function, in account, allows for the validation that a string contains a certain number of digits,
+   uppercase, lowercase and symbol characters. The reason why this was put into account is that it's only use in the
+   program is in account security.
+
+3: void createTicket (struct AccountTicketingData *account_data, int ticket_num);
+   This function is used to get the details of a new ticket. This is located in ticket.h as it is for managing tickets.
+
+4: void listTickets (struct AccountTicketingData *account_data, int ticket_status);
+   This function lists all tickets of a particular status (new, open, closed). This is located in ticket.h as it is for managing tickets.
+
+5: void manageTicket (struct AccountTicketingData *account_data, int ticket_num);
+   This function allows you to change the values of a particular ticket. This is located in ticket.h as it is for managing tickets.
+
+6: void removeTicket (struct AccountTicketingData *account_data, int ticket_num);
+   This function removes a ticket (for the purpose of deleting accounts and their tickets). This is located in ticket.h as it is for managing tickets.

@@ -10,6 +10,7 @@
 
 // Macros
 #define _CRT_SECURE_NO_WARNINGS
+#define MAX_LOGIN_ATTEMPTS 3 // The maximum amount of times someone can attempt to log in.
 
 // Library Imports
 #include <stdio.h>
@@ -105,8 +106,14 @@ int menuLogin (const struct Account accounts[], int max_accounts)
     int correct = 0;
     int loginSelection;
     char exitSelection;
+
+    // Login-related
+    int attempts = MAX_LOGIN_ATTEMPTS;
     int account_num;
     int account_index;
+    char login[31];
+    char password[31];
+
 
     // Being application loop
     while (!correct) {
@@ -130,7 +137,8 @@ int menuLogin (const struct Account accounts[], int max_accounts)
                    "Are you sure you want to exit? ([Y]es|[N]o): ");
             exitSelection = getCharOption("yYnN");
             if (exitSelection == 'Y' || exitSelection == 'y') {
-                return -1;
+                correct = -1;
+                break;
             } else {
                 printf("\n"); // newline
                 continue; // Go back to top of loop.
@@ -139,25 +147,41 @@ int menuLogin (const struct Account accounts[], int max_accounts)
 
         printf("\n"); // newline
 
-        // User selected to log in, prompt for credentials
-        printf("Enter your account#: ");
-        account_num = getPositiveInteger();  // Get the account number
+        while (attempts > 0) {
+            // User selected to log in, prompt for credentials
+            printf("Enter the account#: ");
+            account_num = getPositiveInteger();  // Get the account number
+            printf("User Login        : ");
+            getCString(login, 1, 30);
+            printf("Password          : ");
+            getCString(password, 0, 30);
 
-        // Check if account number exists in values
-        account_index = findAccountIndexByAcctNum(account_num, accounts, max_accounts, 0);
+            // Check if account number exists in values
+            account_index = findAccountIndexByAcctNum(account_num, accounts, max_accounts, 0);
 
-        // Check if the user's provided account number was found.
-        if ((account_index != -1) && accounts[account_index].type == 'A') {
-            correct = 1;
-            return account_index;
-        } else {
-            // Return ERROR then continue
-            printf("ERROR:  Login failed!\n\n");
-            pauseExecution();
+            // Check if the user's provided account number was found.
+            if ((account_index != -1) && accounts[account_index].type == 'A' &&
+                !strcmp(login, accounts[account_index].login.username) && !strcmp(password, accounts[account_index].login.password)
+                && attempts > 0) {
+                correct = account_index;
+                break;
+            } else {
+                // Return ERROR then continue
+                attempts -= 1;
+                printf("INVALID user login/password combination! [attempts remaining:%d]\n\n", attempts);
+            }
+            correct = 0;
+            if (attempts == 0) {
+                // Too many login attempts.
+                printf("ERROR:  Access Denied.\n"
+                       "\n");
+                correct = 0;
+                pauseExecution();
+            }
         }
-        correct = 0;
+        attempts = MAX_LOGIN_ATTEMPTS;
     }
-    return -1;
+    return correct;
 }
 
 void menuAgent (struct AccountTicketingData *account_data, const struct Account user)
@@ -300,20 +324,20 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                 pauseExecution();
                 break;
             case 5:
-                // TODO: List new tickets function
-                printf("Feature #5 currently unavailable!\n");
+                // The user wishes to list all new tickets
+                listTickets(account_data, 2);
                 putchar('\n'); // newline
                 pauseExecution();
                 break;
             case 6:
-                // TODO: List active tickets function
-                printf("Feature #6 currently unavailable!\n");
+                // The user wishes to list all open tickets
+                listTickets(account_data, 1);
                 putchar('\n'); // newline
                 pauseExecution();
                 break;
             case 7:
-                // TODO: List closed tickets function
-                printf("Feature #7 currently unavailable!\n");
+                // The user wishes to list all closed tickets
+                listTickets(account_data, 0);
                 putchar('\n'); // newline
                 pauseExecution();
                 break;

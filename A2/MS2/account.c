@@ -21,6 +21,50 @@
 const int min_age = 18;           // Minimum age to open an account
 const int max_age = 110;          // Maximum age to open an account
 
+// Validate a password to have a certain number of char types.
+// stringVar - pointer to string to check
+// digits - number of digits to validate
+// upper - number of uppercase to validate
+// lower - number of lowercase to validate
+// symbols - number of symbols to validate
+int hasValidChars(char *stringVar, int digits, int upper, int lower, int symbols) {
+    // Password Validation Variables
+    int correct;
+    int digit = 0;
+    int uppercase = 0;
+    int lowercase = 0;
+    int symbol = 0;
+    int i;
+
+    // Loop through characters
+    for (i = 0; stringVar[i] != '\0'; i++) {
+        if (isdigit(stringVar[i])) {
+            digit  += 1;
+        } else if (isupper(stringVar[i])) {
+            uppercase += 1;
+        } else if (islower(stringVar[i])) {
+            lowercase += 1;
+        } else {
+            switch (stringVar[i]) {
+                case '!': case '@': case '#': case '$': case '%': case '^': case '&': case '*':
+                    symbol += 1;
+                    break;
+            }
+        }
+    }
+
+    if (digit >= digits && uppercase >= upper && lowercase >= lower && symbol >= symbols) {
+        // Value is correct
+        correct = 1;
+    } else {
+        // Value is incorrect
+        correct = 0;
+        printf("%d %d %d %d\n", digit, uppercase, lowercase, symbol);
+    }
+
+    return correct;
+}
+
 // Get the details of an account from the user.
 void getAccount (struct Account *account) {
     // Prompt for account type
@@ -99,35 +143,11 @@ void getUserLogin (struct UserLogin *login)
 
     // Get password (with validation of proper chars)
     while (!correct) {
-        // Password Validation Variables
-        int digits = 0;
-        int uppercase = 0;
-        int lowercase = 0;
-        int symbol = 0;
-        int j;
-
         // Prompt for password
         printf("Enter the password (must be 8 chars in length): ");
         getCString(login->password, 8, 8);
 
-        // Loop through characters
-        for (j = 0; login->password[j] != '\0'; j++) {
-            if (isdigit(login->password[j])) {
-                digits += 1;
-            } else if (isupper(login->password[j])) {
-                uppercase += 1;
-            } else if (islower(login->password[j])) {
-                lowercase += 1;
-            } else {
-                switch (login->password[j]) {
-                    case '!': case '@': case '#': case '$': case '%': case '^': case '&': case '*':
-                        symbol += 1;
-                        break;
-                }
-            }
-        }
-
-        if (digits >= 2 && uppercase >= 2 && lowercase >= 2 && symbol >= 2) {
+        if (hasValidChars(login->password, 2, 2, 2, 2)) {
             correct = 1;
         } else {
             // Not correct chars. Print error and prompt again.
@@ -267,35 +287,11 @@ void updateUserLogin (struct UserLogin *login)
 
                 // Get password (with validation of proper chars)
                 while (!correct) {
-                    // Password Validation Variables
-                    int digits = 0;
-                    int uppercase = 0;
-                    int lowercase = 0;
-                    int symbol = 0;
-                    int j;
-
                     // Prompt for password
                     printf("Enter the password (must be 8 chars in length): ");
                     getCString(login->password, 8, 8);
 
-                    // Loop through characters
-                    for (j = 0; login->password[j] != '\0'; j++) {
-                        if (isdigit(login->password[j])) {
-                            digits += 1;
-                        } else if (isupper(login->password[j])) {
-                            uppercase += 1;
-                        } else if (islower(login->password[j])) {
-                            lowercase += 1;
-                        } else {
-                            switch (login->password[j]) {
-                                case '!': case '@': case '#': case '$': case '%': case '^': case '&': case '*':
-                                    symbol += 1;
-                                    break;
-                            }
-                        }
-                    }
-
-                    if (digits >= 2 && uppercase >= 2 && lowercase >= 2 && symbol >= 2) {
+                    if (hasValidChars(login->password, 2, 2, 2, 2)) {
                         correct = 1;
                     } else {
                         // Not correct chars. Print error and prompt again.

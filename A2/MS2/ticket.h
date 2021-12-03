@@ -41,4 +41,24 @@ struct AccountTicketingData {
     const int TICKET_MAX_SIZE;  // maximum elements for ticket array
 };
 
+// Get the details of and create a new ticket.
+// account_data - pointer to array of accounts and tickets
+// ticket_num - the number of the new ticket
+void createTicket (struct AccountTicketingData *account_data, int ticket_num);
+
+// Delete the contents of a ticket
+// account_data - pointer to array of accounts and tickets
+// ticket_num - the number of the new ticket
+void removeTicket (struct AccountTicketingData *account_data, int ticket_num);
+
+// Change the details of an existing ticket
+// account_data - pointer to array of accounts and tickets
+// ticket_num - the number of the new ticket
+void manageTicket (struct AccountTicketingData *account_data, int ticket_num);
+
+// List all tickets with a specific status
+// account_data - pointer to array of accounts and tickets
+// ticket_status - 0 (closed), 1 (open), 2 (new)
+void listTickets (struct AccountTicketingData *account_data, int ticket_status);
+
 #endif //BTP_PROJECT_TICKET_H

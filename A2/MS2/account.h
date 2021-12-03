@@ -59,4 +59,12 @@ void updatePerson (struct Person *person);
 // Update a user's login
 void updateUserLogin (struct UserLogin *login);
 
+// Validate a password to have a certain number of char types.
+// stringVar - pointer to string to check
+// digits - number of digits to validate
+// upper - number of uppercase to validate
+// lower - number of lowercase to validate
+// symbols - number of symbols to validate
+int hasValidChars(char *stringVar, int digits, int upper, int lower, int symbols);
+
 #endif // !ACCOUNT_H_

@@ -14,6 +14,7 @@
 // Library Imports
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include <ctype.h>
 #include "commonHelpers.h"
 
@@ -218,8 +219,7 @@ void getCString (char *stringVar, int minChars, int maxChars)
     while (!correct) {
         scanf("%60[^\n]", string);
 
-        int strLength;
-        for (strLength = 0; string[strLength] != '\0'; strLength++);
+        int strLength = strlen(string);
 
         // Validate response
         if ((strLength >= minChars) && (strLength <= maxChars)) {
