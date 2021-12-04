@@ -155,21 +155,24 @@ int saveTickets (struct AccountTicketingData *account_data)
 
     if (fp) {
         // File was successfully opened. Loop through all entries that are registered (entries with UID of zero excluded).
-        for (i = 0; i < account_data->TICKET_MAX_SIZE && account_data->tickets[i].UID != 0; i++) {
-            // Save initial ticket metadata (non-messages)
-            fprintf(fp, "%d|%d|%1d|%s|%d|", account_data->tickets[i].UID, account_data->tickets[i].customer_acc_num,
-                    account_data->tickets[i].status, account_data->tickets[i].subject, account_data->tickets[i].num_messages);
+        for (i = 0; i < account_data->TICKET_MAX_SIZE; i++) {
+            // Only save tickets that still exist.
+            if (account_data->tickets[i].UID != 0) {
+                // Save initial ticket metadata (non-messages)
+                fprintf(fp, "%d|%d|%1d|%s|%d|", account_data->tickets[i].UID, account_data->tickets[i].customer_acc_num,
+                        account_data->tickets[i].status, account_data->tickets[i].subject, account_data->tickets[i].num_messages);
 
-            // Loop through and save all messages.
-            for (j = 0; j < account_data->tickets[i].num_messages && j < 20; j++) {
-                // Print message data
-                fprintf(fp, "%c|%s|%s|", account_data->tickets[i].messages[j].type, account_data->tickets[i].messages[j].display_name,
-                       account_data->tickets[i].messages[j].message_details);
+                // Loop through and save all messages.
+                for (j = 0; j < account_data->tickets[i].num_messages && j < 20; j++) {
+                    // Print message data
+                    fprintf(fp, "%c|%s|%s|", account_data->tickets[i].messages[j].type, account_data->tickets[i].messages[j].display_name,
+                            account_data->tickets[i].messages[j].message_details);
+                }
+
+                fputc('\n', fp); // Add newline to end of entry
+
+                saved_count++;
             }
-
-            fputc('\n', fp); // Add newline to end of entry
-
-            saved_count++;
         }
     } else {
         // Loading/creating the file resulted in an error. Permission issues?
