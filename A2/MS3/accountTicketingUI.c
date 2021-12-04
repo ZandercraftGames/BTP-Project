@@ -23,10 +23,44 @@
 int loadAccounts (struct Account *accounts, int max_account_size)
 {
     // Variable Declarations
-    int account_count = 0;
+    int account_count = 0; // The number of accounts read and populated by the file.
+    int lines = 0;         // Tracks the number of lines in the file
+    int i;                 // Used for tracking iterations.
+    int j;                 // Secondary: Used for tracking iterations.
+    char tmp;              // Temporary var for storing file data
+    FILE *fp = fopen("accounts.txt", "r"); // Pointer to file content
 
+    // Check number of lines
+    while (tmp = fgetc(fp), tmp != EOF) {
+        if (tmp == '\n') {
+            lines++;
+        }
+    }
+    rewind(fp); // Rewind to the beginning
 
-    // Return the amount of accounts loaded.
+    if (fp) {
+        // File was successfully opened. Begin going line-by-line
+        for (i = 0; i < max_account_size && !feof(fp) && i < lines; i++) {
+            // Loop through contents of line
+            fscanf(fp, "%6d~%c~%[^~]~%4d~%lf~%[^~\n]", &accounts[i].ID, &accounts[i].type, accounts[i].person.fullName,
+                   &accounts[i].person.birthYear, &accounts[i].person.householdIncome, accounts[i].person.country);
+            // check if an agent was just scanned
+            if (accounts[i].type == 'A') {
+                // Read login details
+                fscanf(fp, "~%[^~]~%s\n", accounts[i].login.username, accounts[i].login.password);
+            } else {
+                fgetc(fp); // Read the newline to continue.
+            }
+            account_count++;
+
+        }
+    } else {
+        // The file loading resulted in an error
+        printf("ERROR: Could not load file!\n");
+    }
+
+    // Close the file and return the amount of accounts loaded.
+    fclose(fp);
     return account_count;
 }
 
@@ -35,8 +69,43 @@ int loadTickets (struct Ticket *tickets, int max_ticket_size)
 {
     // Variable Declarations
     int ticket_count = 0;
+    int lines = 0;
+    int i;   // Iteration tracking
+    int j;                 // Secondary: Used for tracking iterations.
+    char tmp;
+    FILE *fp = fopen("tickets.txt", "r"); // Pointer to file content
 
-    // Return the amount of tickets loaded.
+    if (fp) {
+        // Check number of lines
+        while (tmp = fgetc(fp), tmp != EOF) {
+            if (tmp == '\n') {
+                lines++;
+            }
+        }
+        rewind(fp); // Rewind to the beginning
+
+        // File was successfully opened. Begin going line-by-line
+        for (i = 0; i < lines && !feof(fp) && i < max_ticket_size; i++) {
+            // Loop through initial ticket metadata (non-messages)
+            fscanf(fp, "%6d|%6d|%1d|%30[^|]|%d|", &tickets[i].UID, &tickets[i].customer_acc_num, &tickets[i].status,
+                   tickets[i].subject, &tickets[i].num_messages);
+
+            // Loop through and populate all messages.
+            for (j = 0; j < tickets[i].num_messages && j < 20; j++) {
+                // Read message data
+                fscanf(fp, "%c|%30[^|]|%150[^|]|", &tickets[i].messages[j].type, tickets[i].messages[j].display_name,
+                       tickets[i].messages[j].message_details);
+            }
+            ticket_count++;
+
+        }
+    } else {
+        // File loading resulted in an error.
+        printf("ERROR: Could not load file!\n");
+    }
+
+    // Close the file and return the amount of tickets loaded.
+    fclose(fp);
     return ticket_count;
 }
 
@@ -44,7 +113,7 @@ int loadTickets (struct Ticket *tickets, int max_ticket_size)
 void displayAccountDetailHeader (void)
 {
     // Print the table header
-    printf("\n"
+    printf(""
            "Acct# Acct.Type Full Name       Birth Income      Country    Login      Password\n"
            "----- --------- --------------- ----- ----------- ---------- ---------- --------\n");
 }
