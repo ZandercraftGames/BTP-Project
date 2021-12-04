@@ -200,6 +200,7 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
     int zero_not_found = 1;         // Keeps track of if the index of where the account array isn't populated has been found.
     int tickets_removed; // The number of tickets removed during account deletion.
     int new_ticket_index = -1; // keeps track of an empty index for use in making new tickets
+    int new_ticket_accnt;      // value used to track new ticket account input
     int highest_ticket_num = 0;  // Keeps track of the highest ticket number to allow for the addition of it automatically.
     int ticket_account_index;  // Used or keeping track of the account index of the new ticket.
     char ticket_account_confirmation_sel; // Used for tracking the confirmation selection by the user when making a new ticket
@@ -364,9 +365,9 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                 if (new_ticket_index != -1) {
                     // Get the account number
                     printf("Enter the account#: ");
-                    account_data->tickets[i].customer_acc_num = getPositiveInteger(); // Get the account ID from the user.
+                    new_ticket_accnt = getPositiveInteger(); // Get the account ID from the user.
 
-                    ticket_account_index = findAccountIndexByAcctNum(account_data->tickets[i].customer_acc_num, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
+                    ticket_account_index = findAccountIndexByAcctNum(new_ticket_accnt, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
 
                     if (account_data->accounts[ticket_account_index].type == 'C' && account_data->accounts[ticket_account_index].ID != 0) {
                         // The account is a customer and exists. Confirm customer with user.
@@ -381,6 +382,7 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                         if (ticket_account_confirmation_sel == 'Y') {
                             // The user confirms that this is the correct customer.
                             account_data->tickets[new_ticket_index].UID = highest_ticket_num + 1; // Set the account ID
+                            account_data->tickets[new_ticket_index].customer_acc_num = new_ticket_accnt; // Set the customer account number
                             strcpy(account_data->tickets[new_ticket_index].messages[0].display_name, account_data->accounts[ticket_account_index].person.fullName);  // Copy display name.
                             createTicket(&account_data->tickets[new_ticket_index]); // Make the account at the index.
                         } else {
@@ -402,8 +404,6 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                 }
                 break;
             case 9:
-                // TODO: Manage a ticket function
-
                 // Get the ticket number of the ticket the user wants to change
                 printf("Enter ticket number: ");
                 modify_ticket_num = getPositiveInteger();

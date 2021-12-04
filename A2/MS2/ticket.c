@@ -146,7 +146,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                     ticket_data->num_messages++;
                 } else {
                     printf("\n"
-                           "ERROR: Message limit has been reached, call ITS Support!");
+                           "ERROR: Message limit has been reached, call ITS Support!\n");
                 }
                 break;
             case 2:
@@ -164,7 +164,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                     ticket_data->num_messages++;
                 } else {
                     printf("\n"
-                           "ERROR: Message limit has been reached, call ITS Support!");
+                           "ERROR: Message limit has been reached, call ITS Support!\n");
                 }
                 break;
             case 3:
@@ -179,13 +179,13 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                         // User wants to close the ticket
                         ticket_data->status = 0; // set status to closed
 
-                        printf("\n*** Ticket closed! ***");
+                        printf("\n*** Ticket closed! ***\n");
                     } else {
                         // The user does not want to close the ticket. do nothing.
                     }
                 } else {
                     // Ticket is already closed
-                    printf("\nERROR: Ticket is already closed!");
+                    printf("\nERROR: Ticket is already closed!\n");
                 }
                 break;
             case 4:
@@ -200,13 +200,13 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                         // User wants to open the ticket
                         ticket_data->status = 1; // set status to open
 
-                        printf("\n*** Ticket closed! ***");
+                        printf("\n*** Ticket closed! ***\n");
                     } else {
                         // The user does not want to open the ticket. do nothing.
                     }
                 } else {
                     // Ticket is already open
-                    printf("\nERROR: Ticket is already active!");
+                    printf("\nERROR: Ticket is already active!\n");
                 }
                 break;
             case 0:
