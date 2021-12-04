@@ -7,14 +7,44 @@ Email  : zmaitland@myseneca.ca
 Section: NCC
 
 1. a) commonHelpers.h
-      -
+      - void strToUpper (char *stringVar);
    b) account.h
-      -
+      - int hasValidChars(char *stringVar, int digits, int upper, int lower, int symbols);
    c) ticket.h
-      -
+      - int findTicketIndexByUID (struct AccountTicketingData *account_data, int UID, int prompt_for_num);
+      - void createTicket (struct Ticket *ticket_data);
+      - int removeTickets (struct AccountTicketingData *account_data, int account_num);
+      - void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user);
+      - void listTickets (struct AccountTicketingData *account_data, int ticket_status);
    d) accountTicketingUI.h
-      -
+      - int loadAccounts (struct Account *accounts, int max_account_size);
+      - int loadTickets (struct Ticket *tickets, int max_ticket_size);
+      - int saveAccounts (struct AccountTicketingData *account_data);
+      - int saveTickets (struct AccountTicketingData *account_data);
 
-2.
+2. My favourite feature to develop for the program was the persistent data loading and saving
+   functions. The reason for this is that, unlike the rest of the assignment, despite it being a troublesome
+   feature to code with all the complex formatting that they use, it allowed me to focus on introducing a single
+   feature as opposed to introducing features that have sub-features with those sub-features having sub-features. Overall,
+   it was a refreshing experience. To work with the data, putting it in a visible format on the disk also helped significantly
+   with debugging and set my mind at ease about the integrity of the data. The other feature that I enjoyed developing was the
+   ticket system. Although complicated, the ticket system was simpler to implement compared to the account system. Whether
+   that be because I now have a better understanding of how to write such systems than I did at the start of the assigment
+   or if it is simply easier, the ticket structure provided a nice, clean format to work with and the silly antics in the
+   pre-populated data gave me a few chuckles. If I had to guess, I would probably assume that the reason it felt simpler
+   was because it was mainly about displaying data and changing only a few variables. The fact that there is only ever two
+   nested-levels of menus at the most in the ticket system with very little direct interaction between functions also helps
+   to keep it more simple and less stressful to deal with overall.
 
-3.
+3. My least favourite component to implement was the account management system. This includes the menus to create new accounts,
+   edit and list existing accounts, etc. The main reason why I think that I disliked developing it so much is due to its
+   complexity and the volume of components. Unlike the ticket system, the account system's menus often are nested 3 or more
+   levels, providing for a very complicated system to properly implement, with many edge-cases that need to be avoided or
+   compensated for in order to ensure that all the menus cooperate with each other and output with the proper formatting.
+   Managing and tracking down newlines especially was a large task, resulting in many hours of format correction since systems
+   were not cooperating with each other in the way that I thought they would. Another major component of the program that I
+   found quite annoying to deal with was actually the input systems. While it is more of a broad range of features, than a
+   single feature, managing the formatting and validation of inputs with C can be quite a stressful process that can take
+   hours to work out. I often found myself having to revisit functions that I thought were complete only to find that their
+   input validation had some formatting case that one wouldn't usually think of that could break the function, requiring
+   correction. Near the end of the assignment, however, I was able to avoid most of these cases in the development phase.

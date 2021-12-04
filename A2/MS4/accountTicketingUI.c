@@ -463,6 +463,7 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
 
                     if (remove_account_index != -1) {
                         // Account exists, print table header and record
+                        putchar('\n');
                         displayAccountDetailHeader();
                         displayAccountDetailRecord(&account_data->accounts[remove_account_index]);
                         putchar('\n'); // newline
