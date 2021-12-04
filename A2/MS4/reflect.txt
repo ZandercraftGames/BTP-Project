@@ -1,0 +1,20 @@
+==================================================
+Assignment #2 (Milestone #4) Reflection:
+==================================================
+Name   : Zander Maitland
+ID     : 112303219
+Email  : zmaitland@myseneca.ca
+Section: NCC
+
+1. a) commonHelpers.h
+      -
+   b) account.h
+      -
+   c) ticket.h
+      -
+   d) accountTicketingUI.h
+      -
+
+2.
+
+3.
