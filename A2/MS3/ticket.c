@@ -260,7 +260,7 @@ void listTickets (struct AccountTicketingData *account_data, int ticket_status)
                     int customer_account_index = findAccountIndexByAcctNum(account_data->tickets[i].customer_acc_num, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
                     // Is UID populated and ticket status closed?
                     if (account_data->tickets[i].UID != 0 && account_data->tickets[i].status == 0) {
-                        printf("%06d %-5d %-15s %-6s %-30s     %d\n", account_data->tickets[i].UID,
+                        printf("%06d %-5d %-15s %-6s %-30s %5d\n", account_data->tickets[i].UID,
                                account_data->tickets[i].customer_acc_num, account_data->accounts[customer_account_index].person.fullName,
                                "CLOSED", account_data->tickets[i].subject, account_data->tickets[i].num_messages);
                     }
@@ -273,7 +273,7 @@ void listTickets (struct AccountTicketingData *account_data, int ticket_status)
                     int customer_account_index = findAccountIndexByAcctNum(account_data->tickets[i].customer_acc_num, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
                     // Is UID populated and ticket status open?
                     if (account_data->tickets[i].UID != 0 && account_data->tickets[i].status == 1) {
-                        printf("%06d %-5d %-15s %-6s %-30s     %d\n", account_data->tickets[i].UID,
+                        printf("%06d %-5d %-15s %-6s %-30s %5d\n", account_data->tickets[i].UID,
                                account_data->tickets[i].customer_acc_num, account_data->accounts[customer_account_index].person.fullName,
                                "ACTIVE", account_data->tickets[i].subject, account_data->tickets[i].num_messages);
                     }
@@ -286,7 +286,7 @@ void listTickets (struct AccountTicketingData *account_data, int ticket_status)
                     int customer_account_index = findAccountIndexByAcctNum(account_data->tickets[i].customer_acc_num, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
                     // Is UID populated, status open and number of messages only one?
                     if (account_data->tickets[i].UID != 0 && account_data->tickets[i].status == 1 && account_data->tickets[i].num_messages == 1) {
-                        printf("%06d %-5d %-15s %-6s %-30s     %d\n", account_data->tickets[i].UID,
+                        printf("%06d %-5d %-15s %-6s %-30s %5d\n", account_data->tickets[i].UID,
                                account_data->tickets[i].customer_acc_num, account_data->accounts[customer_account_index].person.fullName,
                                "ACTIVE", account_data->tickets[i].subject, account_data->tickets[i].num_messages);
                     }
