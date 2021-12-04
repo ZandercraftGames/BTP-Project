@@ -23,6 +23,12 @@ int loadAccounts (struct Account *accounts, int max_account_size);
 // Loads ticket data from tickets.txt into the specified Ticket array
 int loadTickets (struct Ticket *tickets, int max_ticket_size);
 
+// Saves account data to accounts.txt. Returns count saved.
+int saveAccounts (struct AccountTicketingData *account_data);
+
+// Saves ticket data to tickets.txt. Returns count saved.
+int saveTickets (struct AccountTicketingData *account_data);
+
 // Display the account detail table header
 void displayAccountDetailHeader (void);
 

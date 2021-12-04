@@ -108,6 +108,78 @@ int loadTickets (struct Ticket *tickets, int max_ticket_size)
     return ticket_count;
 }
 
+// Saves account data to accounts.txt. Returns count saved.
+int saveAccounts (struct AccountTicketingData *account_data)
+{
+    // Variable Declarations
+    int saved_count = 0;
+    int i;
+    FILE *fp = fopen("accounts.txt", "w"); // Pointer to file
+
+    if (fp) {
+        // File was successfully opened. Loop through all entries that are registered (entries with ID of zero excluded).
+        for (i = 0; i < account_data->ACCOUNT_MAX_SIZE && account_data->accounts[i].ID != 0; i++) {
+            // Check account type
+            if (account_data->accounts[i].type == 'C') {
+                // Account is a customer (no login credentials.)
+                fprintf(fp, "%d~%c~%s~%4d~%.2lf~%s\n", account_data->accounts[i].ID, account_data->accounts[i].type,
+                        account_data->accounts[i].person.fullName, account_data->accounts[i].person.birthYear,
+                        account_data->accounts[i].person.householdIncome, account_data->accounts[i].person.country);
+            } else {
+                // Account is a customer and must include login credentials
+                fprintf(fp, "%d~%c~%s~%4d~%.2lf~%s~%s~%s\n", account_data->accounts[i].ID, account_data->accounts[i].type,
+                        account_data->accounts[i].person.fullName, account_data->accounts[i].person.birthYear,
+                        account_data->accounts[i].person.householdIncome, account_data->accounts[i].person.country,
+                        account_data->accounts[i].login.username, account_data->accounts[i].login.password);
+            }
+
+            saved_count++;
+        }
+    } else {
+        // Loading/creating the file resulted in an error. Permission issues?
+        printf("ERROR: Could not load file.\n");
+    }
+
+    fclose(fp);
+    return saved_count;
+}
+
+// Saves ticket data to tickets.txt. Returns count saved.
+int saveTickets (struct AccountTicketingData *account_data)
+{
+    // Variable Declarations
+    int saved_count = 0;
+    int i;
+    int j;
+    FILE *fp = fopen("tickets.txt", "w"); // Pointer to file
+
+    if (fp) {
+        // File was successfully opened. Loop through all entries that are registered (entries with UID of zero excluded).
+        for (i = 0; i < account_data->TICKET_MAX_SIZE && account_data->tickets[i].UID != 0; i++) {
+            // Save initial ticket metadata (non-messages)
+            fprintf(fp, "%d|%d|%1d|%s|%d|", account_data->tickets[i].UID, account_data->tickets[i].customer_acc_num,
+                    account_data->tickets[i].status, account_data->tickets[i].subject, account_data->tickets[i].num_messages);
+
+            // Loop through and save all messages.
+            for (j = 0; j < account_data->tickets[i].num_messages && j < 20; j++) {
+                // Print message data
+                fprintf(fp, "%c|%s|%s|", account_data->tickets[i].messages[j].type, account_data->tickets[i].messages[j].display_name,
+                       account_data->tickets[i].messages[j].message_details);
+            }
+
+            fputc('\n', fp); // Add newline to end of entry
+
+            saved_count++;
+        }
+    } else {
+        // Loading/creating the file resulted in an error. Permission issues?
+        printf("ERROR: Could not load file.\n");
+    }
+
+    fclose(fp);
+    return saved_count;
+}
+
 // Display the account detail table header
 void displayAccountDetailHeader (void)
 {
@@ -510,7 +582,11 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                 }
                 break;
             case 0:
-                // The user wishes to log out
+                // The user wishes to log out, save account data to the disk before closing.
+                printf("Saving session modifications...\n"
+                       "   %d account(s) saved.\n"
+                       "   %d ticket(s) saved.\n", saveAccounts(account_data), saveTickets(account_data));
+
                 printf("### LOGGED OUT ###\n");
                 putchar('\n'); // newline
                 done = 1;
