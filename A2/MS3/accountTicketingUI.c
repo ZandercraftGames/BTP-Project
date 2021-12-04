@@ -26,7 +26,6 @@ int loadAccounts (struct Account *accounts, int max_account_size)
     int account_count = 0; // The number of accounts read and populated by the file.
     int lines = 0;         // Tracks the number of lines in the file
     int i;                 // Used for tracking iterations.
-    int j;                 // Secondary: Used for tracking iterations.
     char tmp;              // Temporary var for storing file data
     FILE *fp = fopen("accounts.txt", "r"); // Pointer to file content
 
