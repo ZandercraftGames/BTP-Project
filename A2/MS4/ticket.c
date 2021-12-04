@@ -136,7 +136,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 if (ticket_data->num_messages <= 20) {
                     // Message slots available, prompt for message details.
                     printf("\n"
-                           "Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit: \n");
+                           "Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit:\n");
                     // Save the input to the num_messages (since messages start at 0, num_messages is index of next new message)
                     getCString(ticket_data->messages[ticket_data->num_messages].message_details, 1, 150);
                     strcpy(ticket_data->messages[ticket_data->num_messages].display_name, ticket_data->messages[0].display_name); // Set the display name to the customer
@@ -154,7 +154,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 if (ticket_data->num_messages <= 20) {
                     // Message slots available, prompt for message details
                     printf("\n"
-                           "Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit: \n");
+                           "Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit:\n");
                     // Save the input to the num_messages (since messages start at 0, num_messages is index of next new message)
                     getCString(ticket_data->messages[ticket_data->num_messages].message_details, 1, 150);
                     strcpy(ticket_data->messages[ticket_data->num_messages].display_name, logged_in_user.person.fullName); // Set the display name to the agent's name
@@ -171,7 +171,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 // The user wants to close the ticket, check if ticket is already closed
                 if (ticket_data->status == 1) {
                     // Ticket is open, prompt for confirmation
-                    printf("Are you sure you CLOSE this ticket? ([Y]es|[N]o): ");
+                    printf("\nAre you sure you CLOSE this ticket? ([Y]es|[N]o): ");
                     confirmation = getCharOption("YyNn");
 
                     // Check input
