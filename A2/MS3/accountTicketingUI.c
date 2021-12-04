@@ -19,6 +19,27 @@
 #include "account.h"
 #include "ticket.h"
 
+// Loads account data from accounts.txt into the specified Account array
+int loadAccounts (struct Account *accounts, int max_account_size)
+{
+    // Variable Declarations
+    int account_count = 0;
+
+
+    // Return the amount of accounts loaded.
+    return account_count;
+}
+
+// Loads ticket data from tickets.txt into the specified Ticket array
+int loadTickets (struct Ticket *tickets, int max_ticket_size)
+{
+    // Variable Declarations
+    int ticket_count = 0;
+
+    // Return the amount of tickets loaded.
+    return ticket_count;
+}
+
 // Display the account detail table header
 void displayAccountDetailHeader (void)
 {
