@@ -192,7 +192,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 // The user wants to reopen the ticket, check if ticket is already open
                 if (ticket_data->status == 0) {
                     // Ticket is closed, prompt for confirmation
-                    printf("Are you sure you want to RE-ACTIVATE this closed ticket? ([Y]es|[N]o): ");
+                    printf("\nAre you sure you want to RE-ACTIVATE this closed ticket? ([Y]es|[N]o): ");
                     confirmation = getCharOption("YyNn");
 
                     // Check input
@@ -200,7 +200,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                         // User wants to open the ticket
                         ticket_data->status = 1; // set status to open
 
-                        printf("\n*** Ticket closed! ***\n");
+                        printf("\n*** Ticket re-activated! ***\n");
                     } else {
                         // The user does not want to open the ticket. do nothing.
                     }
