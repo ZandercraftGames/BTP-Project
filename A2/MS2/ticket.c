@@ -214,7 +214,6 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 done = 1;
                 break;
         }
-        done = 1;
     }
 }
 
