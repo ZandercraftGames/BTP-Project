@@ -62,7 +62,7 @@ void createTicket (struct Ticket *ticket_data)
     putchar('\n');
 
     // Get the initial ticket message
-    printf("Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit: \n");
+    printf("Enter the ticket message details (150 chars. maximum). Press the ENTER key to submit:\n");
     getCString(ticket_data->messages[0].message_details, 1, 150);
 
     // Set additional required data
@@ -211,6 +211,7 @@ void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user)
                 break;
             case 0:
                 // The user wants to exit the menu
+                putchar('\n');
                 done = 1;
                 break;
         }
