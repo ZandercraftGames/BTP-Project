@@ -59,7 +59,6 @@ int hasValidChars(char *stringVar, int digits, int upper, int lower, int symbols
     } else {
         // Value is incorrect
         correct = 0;
-        printf("%d %d %d %d\n", digit, uppercase, lowercase, symbol);
     }
 
     return correct;

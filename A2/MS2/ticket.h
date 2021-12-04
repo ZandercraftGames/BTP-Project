@@ -41,20 +41,24 @@ struct AccountTicketingData {
     const int TICKET_MAX_SIZE;  // maximum elements for ticket array
 };
 
-// Get the details of and create a new ticket.
+// Get the index of a ticket from its UID.
 // account_data - pointer to array of accounts and tickets
-// ticket_num - the number of the new ticket
-void createTicket (struct AccountTicketingData *account_data, int ticket_num);
+// UID - the unique ID number of the ticket
+// prompt_for_num - should the system prompt for the ticket number?
+int findTicketIndexByUID (struct AccountTicketingData *account_data, int UID, int prompt_for_num);
 
-// Delete the contents of a ticket
+// Get the details of and create a new ticket.
+// ticket_data - pointer to array of ticket
+void createTicket (struct Ticket *ticket_data);
+
+// Delete the tickets associated with an account
 // account_data - pointer to array of accounts and tickets
-// ticket_num - the number of the new ticket
-void removeTicket (struct AccountTicketingData *account_data, int ticket_num);
+// account_num - the number of the account to remove the tickets from
+int removeTickets (struct AccountTicketingData *account_data, int account_num);
 
 // Change the details of an existing ticket
-// account_data - pointer to array of accounts and tickets
-// ticket_num - the number of the new ticket
-void manageTicket (struct AccountTicketingData *account_data, int ticket_num);
+// ticket_data - pointer to ticket
+void manageTicket (struct Ticket *ticket_data, struct Account logged_in_user);
 
 // List all tickets with a specific status
 // account_data - pointer to array of accounts and tickets

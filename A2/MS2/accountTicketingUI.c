@@ -111,8 +111,8 @@ int menuLogin (const struct Account accounts[], int max_accounts)
     int attempts = MAX_LOGIN_ATTEMPTS;
     int account_num;
     int account_index;
-    char login[31];
-    char password[31];
+    char login[51];
+    char password[51];
 
 
     // Being application loop
@@ -152,9 +152,9 @@ int menuLogin (const struct Account accounts[], int max_accounts)
             printf("Enter the account#: ");
             account_num = getPositiveInteger();  // Get the account number
             printf("User Login        : ");
-            getCString(login, 1, 30);
+            getCString(login, 1, 50);
             printf("Password          : ");
-            getCString(password, 0, 30);
+            getCString(password, 0, 50);
 
             // Check if account number exists in values
             account_index = findAccountIndexByAcctNum(account_num, accounts, max_accounts, 0);
@@ -198,6 +198,13 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
     int i;                      // Iteration variable (moved here because of an annoying compiler error)
     int highest_account_num = 0;    // Keeps track of the highest account number to allow for the addition of it automatically.
     int zero_not_found = 1;         // Keeps track of if the index of where the account array isn't populated has been found.
+    int tickets_removed; // The number of tickets removed during account deletion.
+    int new_ticket_index = -1; // keeps track of an empty index for use in making new tickets
+    int highest_ticket_num = 0;  // Keeps track of the highest ticket number to allow for the addition of it automatically.
+    int ticket_account_index;  // Used or keeping track of the account index of the new ticket.
+    char ticket_account_confirmation_sel; // Used for tracking the confirmation selection by the user when making a new ticket
+    int modify_ticket_num; // Used for keeping track what ticket the user wants to edit.
+    int modify_ticket_index; // Used for keeping track of the index of the ticket the user wants to edit.
 
     putchar('\n'); // newline
 
@@ -227,7 +234,7 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
         user_choice = getIntFromRange(0, 9); // Get the user's input
 
         printf("\n"); // newline
-
+        zero_not_found = 1;  // Reset zero_not_found to 1
         switch (user_choice) {
             case 1:
                 // The user wishes to add a new account
@@ -255,6 +262,8 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                     pauseExecution();
                 } else {
                     printf("ERROR: Account listing is FULL, call ITS Support!\n");
+                    putchar('\n');
+                    pauseExecution();
                 }
                 break;
             case 2:
@@ -303,8 +312,9 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
                         if (confirmation == 'Y') {
                             // Remove the account by setting the ID to zero
                             account_data->accounts[remove_account_index].ID = 0;
+                            tickets_removed = removeTickets(account_data, remove_account_ID);
                             putchar('\n'); // newline
-                            printf("*** Account Removed! ***\n");
+                            printf("*** Account Removed! (%d ticket(s) removed) ***\n", tickets_removed);
                         }
                         putchar('\n'); // newline
 
@@ -326,30 +336,88 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
             case 5:
                 // The user wishes to list all new tickets
                 listTickets(account_data, 2);
-                putchar('\n'); // newline
-                pauseExecution();
                 break;
             case 6:
                 // The user wishes to list all open tickets
                 listTickets(account_data, 1);
-                putchar('\n'); // newline
-                pauseExecution();
                 break;
             case 7:
                 // The user wishes to list all closed tickets
                 listTickets(account_data, 0);
-                putchar('\n'); // newline
-                pauseExecution();
                 break;
             case 8:
-                // TODO: Add a new ticket function
-                printf("Feature #8 currently unavailable!\n");
-                putchar('\n'); // newline
-                pauseExecution();
+                // The user wishes to add a ticket
+
+                // Scan for new ticket ID and index
+                for (i = 0; i < account_data->TICKET_MAX_SIZE; i++) {
+                    // Check if record is populated by checking if ticket exists and ID is 0.
+                    if (account_data->tickets[i].UID == 0 && zero_not_found) {
+                        new_ticket_index = i; // Found record, save index.
+                        zero_not_found = 0;
+                    }
+                    if (account_data->tickets[i].UID >= highest_ticket_num) {
+                        highest_ticket_num = account_data->tickets[i].UID;
+                    }
+                }
+
+                // Check if a blank record was found
+                if (new_ticket_index != -1) {
+                    // Get the account number
+                    printf("Enter the account#: ");
+                    account_data->tickets[i].customer_acc_num = getPositiveInteger(); // Get the account ID from the user.
+
+                    ticket_account_index = findAccountIndexByAcctNum(account_data->tickets[i].customer_acc_num, account_data->accounts, account_data->ACCOUNT_MAX_SIZE, 0);
+
+                    if (account_data->accounts[ticket_account_index].type == 'C' && account_data->accounts[ticket_account_index].ID != 0) {
+                        // The account is a customer and exists. Confirm customer with user.
+                        putchar('\n');
+                        displayAccountDetailHeader();
+                        displayAccountDetailRecord(&account_data->accounts[ticket_account_index]); // Print the account details
+
+                        // Prompt user for confirmation:
+                        printf("\nAdd a new ticket for this customer? ([Y]es|[N]o): ");
+                        ticket_account_confirmation_sel = getCharOption("YyNn");
+
+                        if (ticket_account_confirmation_sel == 'Y') {
+                            // The user confirms that this is the correct customer.
+                            account_data->tickets[new_ticket_index].UID = highest_ticket_num + 1; // Set the account ID
+                            strcpy(account_data->tickets[new_ticket_index].messages[0].display_name, account_data->accounts[ticket_account_index].person.fullName);  // Copy display name.
+                            createTicket(&account_data->tickets[new_ticket_index]); // Make the account at the index.
+                        } else {
+                            // This is the incorrect selection.
+                            putchar('\n');
+                        }
+                    } else if (account_data->accounts[ticket_account_index].type == 'A') {
+                        // The account is an agent, agents cannot have tickets
+                        printf("\nERROR: Agent accounts can't have tickets!\n\n");
+                    } else {
+                        printf("\nERROR: Invalid account.\n\n");
+                    }
+                    // Pause execution after account made.
+                    pauseExecution();
+                } else {
+                    printf("\nERROR: Ticket listing is FULL, call ITS Support!\n");
+                    putchar('\n');
+                    pauseExecution();
+                }
                 break;
             case 9:
                 // TODO: Manage a ticket function
-                printf("Feature #9 currently unavailable!\n");
+
+                // Get the ticket number of the ticket the user wants to change
+                printf("Enter ticket number: ");
+                modify_ticket_num = getPositiveInteger();
+                modify_ticket_index = findTicketIndexByUID(account_data, modify_ticket_num, 0);
+
+                // Validate that is actual ticket.
+                if (modify_ticket_index != -1 && modify_ticket_num != 0) {
+                    // The ticket exists, send the user to the ticket manager.
+                    manageTicket(&account_data->tickets[modify_ticket_index], user);
+                } else {
+                    // The ticket doesn't exist
+                    printf("ERROR: Ticket not found.\n");
+                }
+
                 putchar('\n'); // newline
                 pauseExecution();
                 break;
@@ -361,8 +429,6 @@ void menuAgent (struct AccountTicketingData *account_data, const struct Account 
         }
     }
 }
-
-
 
 // Entry point to application
 void applicationStartup (struct AccountTicketingData *account_data)
